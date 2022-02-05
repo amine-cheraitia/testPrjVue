@@ -20,6 +20,8 @@ export default {
 
 html {
   font-family: 'Roboto', sans-serif;
+
+  /*  width: 100vw; */
 }
 
 body {
