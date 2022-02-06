@@ -62,16 +62,18 @@ export default {
       areas: [],
     };
   },
+  emits: ['submitData'],
   methods: {
     submitForm() {
       const formData = {
+        id: 'c9',
         first: this.firstName,
         last: this.lastName,
         desc: this.description,
         rate: this.rate,
         areas: this.areas,
       };
-      console.log(formData);
+      this.$emit('submitData', formData);
     },
   },
 };

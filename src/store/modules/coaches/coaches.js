@@ -24,14 +24,41 @@ export default {
       ],
     };
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    addNewCoach(state, payload) {
+      console.log('mutation ' + payload);
+      state.coaches.push(payload);
+      console.log(state);
+    },
+  },
+  actions: {
+    addNewCoachs(context, payload) {
+      console.log('actions ' + payload);
+      const data = {
+        id: context.rootGetters.userId,
+        firstName: payload.first,
+        lastName: payload.last,
+        areas: payload.areas,
+        description: payload.desc,
+        hourlyRate: payload.rate,
+      };
+
+      context.commit('addNewCoach', data);
+    },
+  },
   getters: {
     coaches(state) {
       return state.coaches;
     },
     hasCoaches(state) {
       return state.coaches && state.coaches.length > 0;
+    },
+    isCoach(_, getters, _2, rootGetters) {
+      const coaches = getters.coaches;
+      const userId = rootGetters.userId;
+      /* coaches.find((coach) => coach.id === rootGetters.userId); */
+
+      return coaches.some((coach) => coach.id === userId);
     },
   },
 };
