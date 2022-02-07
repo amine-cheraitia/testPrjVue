@@ -26,14 +26,11 @@ export default {
   },
   mutations: {
     addNewCoach(state, payload) {
-      console.log('mutation ' + payload);
       state.coaches.push(payload);
-      console.log(state);
     },
   },
   actions: {
     addNewCoachs(context, payload) {
-      console.log('actions ' + payload);
       const data = {
         id: context.rootGetters.userId,
         firstName: payload.first,

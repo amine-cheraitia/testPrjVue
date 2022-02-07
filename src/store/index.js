@@ -9,7 +9,7 @@ const store = createStore({
   },
   state() {
     return {
-      userId: null,
+      userId: 'c5',
     };
   },
   getters: {
