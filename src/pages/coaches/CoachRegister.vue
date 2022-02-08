@@ -1,9 +1,9 @@
 <template>
   <section>
     <base-card>
+      <h2>Register as a coach now</h2>
       <coach-register @submit-data="savedData"></coach-register>
-      <h2>Register as a coach now</h2></base-card
-    >
+    </base-card>
   </section>
 </template>
 
