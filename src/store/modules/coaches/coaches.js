@@ -2,6 +2,7 @@ export default {
   namespaced: true,
   state() {
     return {
+      lastFetch: null,
       coaches: [
         {
           id: 'c1',
@@ -30,6 +31,9 @@ export default {
     },
     setCoaches(state, payload) {
       state.coaches = payload;
+    },
+    setFetchTimeStamp(state) {
+      state.lastFetch = new Date().getTime();
     },
   },
   actions: {
@@ -62,6 +66,10 @@ export default {
     },
     /* Charger les coaches via fire base */
     async loadCoaches(context) {
+      if (!context.getters.shouldUpdate) {
+        return;
+      }
+
       const response = await fetch(
         `https://coach-app-16507-default-rtdb.europe-west1.firebasedatabase.app/coaches.json`
       ); // le await permet d'attendre le résultat du fetch
@@ -85,6 +93,7 @@ export default {
         console.log(coach);
       }
       context.commit('setCoaches', coaches);
+      context.commit('setFetchTimeStamp');
     },
   },
   getters: {
@@ -100,6 +109,14 @@ export default {
       /* coaches.find((coach) => coach.id === rootGetters.userId); */
 
       return coaches.some((coach) => coach.id === userId);
+    },
+    shouldUpdate(state) {
+      const lastFetch = state.lastFetch;
+      if (!lastFetch) {
+        return true;
+      }
+      const currentTimeStamp = new Date().getTime();
+      return (currentTimeStamp - lastFetch) / 1000 > 60; // v 26 si cache supérieur a 1 min retourne  false
     },
   },
 };
