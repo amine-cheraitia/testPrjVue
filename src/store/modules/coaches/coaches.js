@@ -28,19 +28,62 @@ export default {
     addNewCoach(state, payload) {
       state.coaches.push(payload);
     },
+    setCoaches(state, payload) {
+      state.coaches = payload;
+    },
   },
   actions: {
-    addNewCoachs(context, payload) {
+    /* ajouter des coaches sur firebase */
+    async addNewCoachs(context, payload) {
+      const userId = context.rootGetters.userId;
       const data = {
-        id: context.rootGetters.userId,
         firstName: payload.first,
         lastName: payload.last,
         areas: payload.areas,
         description: payload.desc,
         hourlyRate: payload.rate,
       };
-
-      context.commit('addNewCoach', data);
+      const response = await fetch(
+        `https://coach-app-16507-default-rtdb.europe-west1.firebasedatabase.app/coaches/${userId}.json`,
+        {
+          method: 'PUT',
+          body: JSON.stringify(data),
+        }
+      );
+      const responseData = await response.json();
+      if (!response.ok) {
+        //error
+      }
+      responseData;
+      context.commit('addNewCoach', {
+        ...data,
+        id: userId,
+      });
+    },
+    /* Charger les coaches via fire base */
+    async loadCoaches(context) {
+      const response = await fetch(
+        `https://coach-app-16507-default-rtdb.europe-west1.firebasedatabase.app/coaches.json`
+      ); // le await permet d'attendre le résultat du fetch
+      const responseData = await response.json();
+      if (!response.ok) {
+        //error
+      }
+      const coaches = [];
+      for (const key in responseData) {
+        // vu que firebase a une structure bizzare genre .coaches/c1.json .coaches/c2.json on utilis cette boucle
+        const coach = {
+          id: key,
+          firstName: responseData[key].firstName,
+          lastName: responseData[key].lastName,
+          areas: responseData[key].areas,
+          description: responseData[key].description,
+          hourlyRate: responseData[key].hourlyRate,
+        };
+        coaches.push(coach);
+        console.log(coach);
+      }
+      context.commit('setCoaches', coaches);
     },
   },
   getters: {
