@@ -14,6 +14,13 @@ export default {
     },
   },
   actions: {
+    logout(context) {
+      context.commit('setUser', {
+        userId: null,
+        token: null,
+        tokenExpiration: null,
+      });
+    },
     async login(context, payload) {
       const response = await fetch(
         'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCxJ333Sm5mSEJm2VbmZ8EQ7QOugundan8',
@@ -74,6 +81,9 @@ export default {
     },
     token(state) {
       return state.token;
+    },
+    isAuthenticated(state) {
+      return !!state.token;
     },
   },
 };
