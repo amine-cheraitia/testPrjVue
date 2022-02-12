@@ -82,7 +82,11 @@ export default {
 
       try {
         if (this.mode === 'login') {
-          this.mode;
+          await this.$store.dispatch('login', {
+            email: this.email,
+            password: this.password,
+          });
+          console.log('login');
         } else {
           await this.$store.dispatch('signup', {
             email: this.email,

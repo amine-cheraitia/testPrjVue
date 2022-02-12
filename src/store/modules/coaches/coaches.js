@@ -47,8 +47,11 @@ export default {
         description: payload.desc,
         hourlyRate: payload.rate,
       };
+
+      const token = context.rootGetters.token;
+
       const response = await fetch(
-        `https://coach-app-16507-default-rtdb.europe-west1.firebasedatabase.app/coaches/${userId}.json`,
+        `https://coach-app-16507-default-rtdb.europe-west1.firebasedatabase.app/coaches/${userId}.json?auth=${token}`,
         {
           method: 'PUT',
           body: JSON.stringify(data),
