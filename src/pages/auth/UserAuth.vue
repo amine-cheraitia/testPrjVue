@@ -93,7 +93,10 @@ export default {
             password: this.password,
           });
         }
-        this.$router.replace('/coaches');
+        const redirectUrl = '/' + (this.$route.query.redirect || 'coaches'); // si le 1er n'existe pas (lien avec param redirect) on execute /coaches
+        this.$router.replace(redirectUrl);
+
+        /* this.$router.replace('/coaches'); */
       } catch (error) {
         this.error = error.message || 'Failed to authenticate, try later.';
       }
