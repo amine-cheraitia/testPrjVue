@@ -10,6 +10,7 @@ export default {
   },
   mutations: {
     setUser(state, payload) {
+      state.didAutoLogout = false;
       state.token = payload.token;
       state.userId = payload.userId;
       /* state.tokenExpiration = payload.tokenExpiration; */
@@ -112,7 +113,7 @@ export default {
         );
         throw error;
       }
-      const expiresIn = 10000;
+      const expiresIn = +responseData.expiresIn * 1000;
       const expirationDate = new Date().getTime() + expiresIn;
       localStorage.setItem('token', responseData.idToken);
       localStorage.setItem('userId', responseData.localId);
